@@ -1,0 +1,191 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-serif: "Times New Roman", Times, serif;
+  
+  --color-primary: var(--primary, #007aff);
+  --color-secondary: var(--secondary, #5e5ce6);
+  --color-accent: #ffffff;
+  --color-dark: #000000;
+  --color-card: #1c1c1e;
+  --color-glass: rgba(255, 255, 255, 0.03);
+  --color-glass-border: rgba(255, 255, 255, 0.08);
+}
+
+@layer base {
+  :root {
+    --primary: #007aff;
+    --secondary: #5e5ce6;
+  }
+
+  .theme-midnight {
+    --primary: #007aff;
+    --secondary: #5e5ce6;
+  }
+
+  .theme-emerald {
+    --primary: #10b981;
+    --secondary: #059669;
+  }
+
+  .theme-rose {
+    --primary: #f43f5e;
+    --secondary: #e11d48;
+  }
+
+  .theme-amber {
+    --primary: #f59e0b;
+    --secondary: #d97706;
+  }
+
+  body {
+    @apply bg-dark text-white font-sans antialiased selection:bg-primary/30 selection:text-primary;
+    overflow-x: hidden;
+    letter-spacing: -0.01em;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-tight;
+  }
+}
+
+@utility glass {
+  @apply bg-glass backdrop-blur-2xl border border-glass-border;
+}
+  
+@utility text-gradient {
+  @apply bg-clip-text text-transparent bg-gradient-to-b from-white to-white/50;
+}
+  
+@utility text-accent-gradient {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary;
+}
+  
+@utility bg-gradient-main {
+  @apply bg-black;
+}
+
+@utility glow-border {
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+  .glow-border::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    background: linear-gradient(45deg, var(--color-primary), var(--color-secondary));
+    z-index: -1;
+    border-radius: inherit;
+    filter: blur(12px);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  .glow-border:hover::after {
+    opacity: 0.3;
+  }
+
+@utility mask-fade-bottom {
+  mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+}
+
+@utility bento-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: minmax(100px, auto);
+  gap: 1.5rem;
+}
+
+@utility bento-item {
+  @apply glass rounded-[2rem] p-8 transition-all duration-500 hover:scale-[1.02] hover:border-primary/30;
+}
+
+@utility terminal-box {
+  @apply bg-black/80 border border-white/10 rounded-xl overflow-hidden font-mono text-sm;
+}
+
+@utility terminal-header {
+  @apply bg-white/5 px-4 py-2 border-b border-white/10 flex items-center gap-2;
+}
+
+@utility noise-overlay {
+  position: fixed;
+  inset: -200%;
+  z-index: 50;
+  background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+  opacity: 0.05;
+  pointer-events: none;
+  animation: noise 0.2s infinite;
+}
+
+@keyframes noise {
+  0% { transform: translate(0,0) }
+  10% { transform: translate(-5%,-5%) }
+  20% { transform: translate(-10%,5%) }
+  30% { transform: translate(5%,-10%) }
+  40% { transform: translate(-5%,15%) }
+  50% { transform: translate(-10%,5%) }
+  60% { transform: translate(15%,0) }
+  70% { transform: translate(0,10%) }
+  80% { transform: translate(-15%,0) }
+  90% { transform: translate(10%,5%) }
+  100% { transform: translate(5%,0) }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-black;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-white/10 rounded-full hover:bg-white/20 transition-colors;
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Section Spacing */
+section {
+  @apply py-32 md:py-48;
+}
+
+/* Print Styles */
+@media print {
+  body, html {
+    background: #ffffff !important;
+    color: #111111 !important;
+    font-family: 'Inter', Arial, sans-serif !important;
+    width: 210mm;
+    height: 297mm;
+  }
+
+  /* Hide screen-only content */
+  header, footer, nav, aside, .fixed, .noise-overlay, .background-container,
+  section:not(.print-resume-section) {
+    display: none !important;
+  }
+
+  /* Make sure our print-resume-section is shown and formatted correctly */
+  .print-resume-section {
+    display: block !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white !important;
+    color: black !important;
+  }
+}
